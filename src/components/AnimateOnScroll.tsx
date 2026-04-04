@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useRef, ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 interface AnimateOnScrollProps {
   children: ReactNode;
   className?: string;
   threshold?: number;
   rootMargin?: string;
-  as?: keyof JSX.IntrinsicElements;
+  as?: keyof HTMLElementTagNameMap;
 }
 
 export default function AnimateOnScroll({
@@ -38,7 +38,7 @@ export default function AnimateOnScroll({
   }, [threshold, rootMargin]);
 
   return (
-    // @ts-expect-error dynamic tag
+    // @ts-expect-error Dynamic HTML tag + HTMLElement ref
     <Tag ref={ref} className={className}>
       {children}
     </Tag>

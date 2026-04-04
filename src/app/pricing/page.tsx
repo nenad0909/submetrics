@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
+import AnimateOnScroll from "@/components/AnimateOnScroll";
 
 const plans = [
   {
@@ -16,7 +20,6 @@ const plans = [
     notIncluded: ["Cohort analysis", "Multi-platform", "API access", "White-label reports"],
     cta: "Start Free Trial",
     popular: false,
-    color: "border-foreground/10",
     badge: null,
   },
   {
@@ -36,7 +39,6 @@ const plans = [
     notIncluded: ["API access", "White-label reports"],
     cta: "Start Free Trial",
     popular: true,
-    color: "border-primary",
     badge: "Most Popular",
   },
   {
@@ -56,7 +58,6 @@ const plans = [
     notIncluded: [],
     cta: "Start Free Trial",
     popular: false,
-    color: "border-foreground/10",
     badge: null,
   },
 ];
@@ -88,90 +89,155 @@ const faqs = [
   },
 ];
 
+function AccordionItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="border-b border-white/8 last:border-0">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between py-5 text-left group"
+      >
+        <span className="font-display font-semibold text-white group-hover:text-primary transition-colors pr-8">
+          {q}
+        </span>
+        <span
+          className={`shrink-0 w-6 h-6 rounded-full border border-white/15 flex items-center justify-center text-white/50 transition-all duration-300 ${
+            open ? "rotate-45 border-primary text-primary" : ""
+          }`}
+        >
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <path d="M5 1v8M1 5h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </span>
+      </button>
+      <div
+        className={`overflow-hidden transition-all duration-500 ease-in-out ${
+          open ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <p className="pb-5 text-sm text-white/45 leading-relaxed">{a}</p>
+      </div>
+    </div>
+  );
+}
+
+const NAV_H = 64;
+
+const heroStyle = {
+  position: "sticky" as const,
+  top: NAV_H,
+  zIndex: 10,
+  minHeight: `calc(100vh - ${NAV_H}px)`,
+  backgroundColor: "var(--background)",
+};
+
+function stackStyle(z: number) {
+  return {
+    position: "sticky" as const,
+    top: NAV_H,
+    zIndex: z,
+    minHeight: `calc(100vh - ${NAV_H}px)`,
+    backgroundColor: "var(--background)",
+    borderRadius: "16px 16px 0 0",
+    boxShadow: "0 -12px 60px rgba(0,0,0,0.5)",
+    overflow: "hidden" as const,
+  };
+}
+
 export default function PricingPage() {
   return (
-    <div className="min-h-screen">
+    <>
       {/* Hero */}
-      <section className="relative py-20 sm:py-28 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="inline-flex items-center px-3 py-1 rounded-full bg-tertiary/10 text-tertiary text-sm font-medium mb-6">
-            Simple Pricing
-          </span>
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
-            Analytics that don&apos;t
-            <br />
-            <span className="text-primary">break the bank</span>
-          </h1>
-          <p className="mt-6 text-lg text-muted max-w-2xl mx-auto">
-            Start at $19/month. No hidden fees, no per-seat pricing, no surprises. Every plan includes a 14-day free trial.
+      <section style={heroStyle} className="relative flex flex-col justify-start overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 w-full">
+          <p
+            className="section-label mb-6 hero-reveal"
+            style={{ "--delay": "0ms" } as React.CSSProperties}
+          >
+            01 / Pricing
+          </p>
+          <div className="overflow-hidden mb-2">
+            <h1
+              className="hero-reveal font-display font-extrabold text-white leading-[0.95]"
+              style={{ fontSize: "clamp(3rem, 9vw, 8rem)", "--delay": "80ms" } as React.CSSProperties}
+            >
+              Analytics that don&apos;t
+            </h1>
+          </div>
+          <div className="overflow-hidden mb-8">
+            <h1
+              className="hero-reveal font-display font-extrabold leading-[0.95]"
+              style={{ fontSize: "clamp(3rem, 9vw, 8rem)", "--delay": "200ms", color: "var(--primary)" } as React.CSSProperties}
+            >
+              break the bank.
+            </h1>
+          </div>
+          <p
+            className="hero-fade-up text-white/45 text-lg max-w-2xl leading-relaxed"
+            style={{ "--delay": "380ms" } as React.CSSProperties}
+          >
+            Start at $19/month. No hidden fees, no per-seat pricing, no surprises.
+            Every plan includes a 14-day free trial.
           </p>
         </div>
       </section>
 
       {/* Pricing Cards */}
-      <section className="pb-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {plans.map((plan) => (
+      <section style={stackStyle(11)} className="flex flex-col justify-start">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+          <AnimateOnScroll className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {plans.map((plan, i) => (
               <div
                 key={plan.name}
-                className={`relative bg-white rounded-2xl border-2 ${plan.color} overflow-hidden card-hover ${
-                  plan.popular ? "shadow-xl scale-[1.02]" : "shadow-md"
-                }`}
+                className={`fade-up relative rounded-2xl overflow-hidden transition-all duration-300 ${
+                  plan.popular ? "border-2 border-primary" : "border border-white/8"
+                } bg-white/3 hover:bg-white/5`}
+                style={{
+                  "--delay": `${i * 100}ms`,
+                  ...(plan.popular
+                    ? { boxShadow: "0 0 60px rgba(235,89,54,0.12), 0 0 120px rgba(235,89,54,0.05)" }
+                    : {}),
+                } as React.CSSProperties}
               >
                 {plan.badge && (
-                  <div className="bg-primary text-white text-center py-2 text-xs font-bold uppercase tracking-wider">
+                  <div className="bg-primary text-white text-center py-2 text-xs font-bold uppercase tracking-widest">
                     {plan.badge}
                   </div>
                 )}
                 <div className="p-8">
-                  <h3 className="font-display text-xl font-bold">{plan.name}</h3>
-                  <p className="text-sm text-muted mt-1 mb-6">{plan.description}</p>
-
+                  <h3 className="font-display text-xl font-bold text-white">{plan.name}</h3>
+                  <p className="text-sm text-white/40 mt-1 mb-7">{plan.description}</p>
                   <div className="flex items-baseline gap-1 mb-8">
-                    <span className="text-5xl font-display font-extrabold">${plan.price}</span>
-                    <span className="text-muted text-sm">/month</span>
+                    <span className="text-5xl font-display font-extrabold text-white">${plan.price}</span>
+                    <span className="text-white/35 text-sm">/month</span>
                   </div>
-
                   <Link
                     href="/dashboard"
-                    className={`block text-center py-3.5 rounded-xl font-semibold text-sm transition-all ${
+                    className={`block text-center py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 ${
                       plan.popular
-                        ? "bg-primary text-white hover:bg-primary/90 shadow-lg"
-                        : "bg-foreground/5 text-foreground hover:bg-foreground/10"
+                        ? "bg-primary text-white hover:bg-primary/90"
+                        : "bg-white/8 text-white hover:bg-white/12 border border-white/10"
                     }`}
                   >
                     {plan.cta}
                   </Link>
-
                   <div className="mt-8">
-                    <p className="text-xs font-semibold text-foreground/40 uppercase tracking-wider mb-3">
+                    <p className="text-[10px] font-semibold text-white/25 uppercase tracking-widest mb-4">
                       What&apos;s included
                     </p>
                     <ul className="space-y-2.5">
                       {plan.features.map((f) => (
-                        <li key={f} className="flex items-start gap-2.5 text-sm">
-                          <svg
-                            className="w-4 h-4 text-tertiary mt-0.5 shrink-0"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth="2.5"
-                          >
+                        <li key={f} className="flex items-start gap-2.5 text-sm text-white/70">
+                          <svg className="w-4 h-4 text-tertiary mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                             <path d="M5 13l4 4L19 7" />
                           </svg>
                           {f}
                         </li>
                       ))}
                       {plan.notIncluded.map((f) => (
-                        <li key={f} className="flex items-start gap-2.5 text-sm text-muted/50">
-                          <svg
-                            className="w-4 h-4 text-foreground/20 mt-0.5 shrink-0"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          >
+                        <li key={f} className="flex items-start gap-2.5 text-sm text-white/20">
+                          <svg className="w-4 h-4 text-white/15 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path d="M6 18L18 6M6 6l12 12" />
                           </svg>
                           {f}
@@ -182,76 +248,100 @@ export default function PricingPage() {
                 </div>
               </div>
             ))}
-          </div>
-
-          <p className="text-center text-sm text-muted mt-8">
-            All prices in USD. Save 20% with annual billing.
-          </p>
+          </AnimateOnScroll>
+          <AnimateOnScroll>
+            <p className="fade-up text-center text-sm text-white/30 mt-8">
+              All prices in USD. Save 20% with annual billing.
+            </p>
+          </AnimateOnScroll>
         </div>
       </section>
 
-      {/* Target customer */}
-      <section className="py-20 bg-white/40">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-display text-3xl font-bold mb-4">Built for the indie founder budget</h2>
-          <p className="text-muted text-lg mb-10 max-w-2xl mx-auto">
-            Most analytics tools start at $100+/month. We believe early-stage founders deserve great tools at a fair price.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      {/* Who It's For */}
+      <section style={stackStyle(12)} className="flex flex-col justify-start">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 w-full">
+          <AnimateOnScroll className="text-center mb-14">
+            <p className="section-label justify-center mb-6 fade-up">02 / Who It&apos;s For</p>
+            <h2
+              className="reveal-text font-display font-extrabold text-white leading-[0.95] mb-5"
+              style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+            >
+              Built for the indie founder budget.
+            </h2>
+            <p
+              className="fade-up text-white/45 text-lg max-w-xl mx-auto"
+              style={{ "--delay": "200ms" } as React.CSSProperties}
+            >
+              Most analytics tools start at $100+/month. Early-stage founders deserve great tools at a fair price.
+            </p>
+          </AnimateOnScroll>
+          <AnimateOnScroll className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
-              { icon: "🚀", title: "Solo Founders", desc: "Building your first SaaS product under $50K MRR" },
-              { icon: "🛠", title: "Dev Agencies", desc: "Running multiple subscription products for clients" },
-              { icon: "💡", title: "Indie Hackers", desc: "No-code builders launching their first paid tool" },
-            ].map((t) => (
-              <div key={t.title} className="bg-white rounded-2xl p-6 border border-foreground/5">
-                <div className="text-3xl mb-3">{t.icon}</div>
-                <h3 className="font-display font-bold mb-1">{t.title}</h3>
-                <p className="text-sm text-muted">{t.desc}</p>
+              { title: "Solo Founders", desc: "Building your first SaaS product under $50K MRR", icon: "◉" },
+              { title: "Dev Agencies", desc: "Running multiple subscription products for clients", icon: "◈" },
+              { title: "Indie Hackers", desc: "No-code builders launching their first paid tool", icon: "◇" },
+            ].map((t, i) => (
+              <div
+                key={t.title}
+                className="fade-up bg-white/3 border border-white/8 rounded-2xl p-8 text-center hover:border-white/15 transition-all duration-300"
+                style={{ "--delay": `${i * 100}ms` } as React.CSSProperties}
+              >
+                <div className="text-3xl text-primary font-mono mb-4">{t.icon}</div>
+                <h3 className="font-display font-bold text-white mb-2">{t.title}</h3>
+                <p className="text-sm text-white/40">{t.desc}</p>
               </div>
             ))}
-          </div>
+          </AnimateOnScroll>
         </div>
       </section>
 
-      {/* FAQs */}
-      <section className="py-20">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="font-display text-3xl font-bold">Frequently asked questions</h2>
-          </div>
-
-          <div className="space-y-4">
-            {faqs.map((faq) => (
-              <div key={faq.q} className="bg-white rounded-2xl p-6 border border-foreground/5">
-                <h3 className="font-display font-semibold mb-2">{faq.q}</h3>
-                <p className="text-sm text-muted leading-relaxed">{faq.a}</p>
-              </div>
-            ))}
-          </div>
+      {/* FAQ */}
+      <section style={stackStyle(13)} className="flex flex-col justify-start">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-24 w-full">
+          <AnimateOnScroll className="mb-12">
+            <p className="section-label mb-6 fade-up">03 / FAQ</p>
+            <h2
+              className="reveal-text font-display font-extrabold text-white leading-[0.95]"
+              style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+            >
+              Frequently asked questions.
+            </h2>
+          </AnimateOnScroll>
+          <AnimateOnScroll>
+            <div className="fade-up bg-white/3 border border-white/8 rounded-2xl px-8 py-2">
+              {faqs.map((faq) => (
+                <AccordionItem key={faq.q} q={faq.q} a={faq.a} />
+              ))}
+            </div>
+          </AnimateOnScroll>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-foreground rounded-3xl p-10 sm:p-16 text-center relative overflow-hidden">
-            <div className="relative">
-              <h2 className="font-display text-3xl font-bold text-white mb-4">
-                Start tracking your metrics today
-              </h2>
-              <p className="text-white/60 text-lg mb-8">
-                14-day free trial. No credit card. Cancel anytime.
-              </p>
-              <Link
-                href="/dashboard"
-                className="inline-flex px-8 py-4 bg-primary text-white rounded-xl text-base font-semibold hover:bg-primary/90 transition-all shadow-lg"
-              >
-                Start Free Trial
-              </Link>
-            </div>
-          </div>
+      <section style={stackStyle(14)} className="flex flex-col justify-start">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 w-full text-center">
+          <AnimateOnScroll>
+            <h2
+              className="reveal-text font-display font-extrabold text-white leading-[0.95] mb-6"
+              style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)" }}
+            >
+              Start tracking your
+              <br />
+              <span className="text-primary">metrics today.</span>
+            </h2>
+            <p className="fade-up text-white/45 text-lg mb-10" style={{ "--delay": "200ms" } as React.CSSProperties}>
+              14-day free trial. No credit card. Cancel anytime.
+            </p>
+            <Link
+              href="/dashboard"
+              className="fade-up inline-flex px-10 py-4 bg-primary text-white rounded-xl text-base font-semibold hover:bg-primary/90 transition-all animate-pulse-glow"
+              style={{ "--delay": "320ms" } as React.CSSProperties}
+            >
+              Start Free Trial
+            </Link>
+          </AnimateOnScroll>
         </div>
       </section>
-    </div>
+    </>
   );
 }

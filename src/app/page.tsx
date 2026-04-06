@@ -1,36 +1,31 @@
 import Link from "next/link";
+import Image from "next/image";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 
 const features = [
   {
     label: "MRR & ARR",
     desc: "Watch revenue update in real-time. New subs, expansions, contractions and churn as they happen.",
-    icon: "↗",
   },
   {
     label: "Churn Alerts",
     desc: "Instant Slack or email alerts when a customer cancels. Act fast to save at-risk customers.",
-    icon: "◎",
   },
   {
     label: "Customer LTV",
     desc: "Know exactly what each customer is worth. Segment by plan, cohort, or acquisition channel.",
-    icon: "◈",
   },
   {
     label: "Cohort Retention",
     desc: "Beautiful retention heatmaps showing how each monthly cohort retains over time.",
-    icon: "⊞",
   },
   {
     label: "Revenue Forecasting",
     desc: "AI-powered projections based on your historical data. See where MRR is headed in 3–12 months.",
-    icon: "◇",
   },
   {
     label: "Multi-Platform",
     desc: "Stripe, RevenueCat, Paddle — one dashboard for all your subscription revenue.",
-    icon: "⊕",
   },
 ];
 
@@ -223,7 +218,13 @@ function FeaturesSection() {
               className="fade-up group bg-white/3 border border-white/8 rounded-2xl p-7 hover:border-primary/40 hover:bg-white/5 transition-all duration-300 cursor-default"
               style={{ "--delay": `${i * 80}ms` } as React.CSSProperties}
             >
-              <div className="text-2xl text-primary mb-5 font-mono">{f.icon}</div>
+              <Image
+                src="/icon.svg"
+                alt=""
+                width={24}
+                height={24}
+                className="mb-5 shrink-0 size-6"
+              />
               <h3 className="font-display text-lg font-bold text-white mb-2">{f.label}</h3>
               <p className="text-sm text-white/45 leading-relaxed">{f.desc}</p>
             </div>

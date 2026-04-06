@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 
 const values = [
@@ -6,25 +7,21 @@ const values = [
     title: "Simplicity First",
     description:
       "We believe the best tools are the ones you don't have to think about. No setup wizards, no configuration headaches. Connect Stripe and go.",
-    icon: "↯",
   },
   {
     title: "Built for Indie",
     description:
       "We're indie founders too. We build for people like us — bootstrapped, budget-conscious, and focused on shipping. Not enterprise committees.",
-    icon: "◉",
   },
   {
     title: "Transparency",
     description:
       "No hidden fees, no surprise pricing tiers, no dark patterns. What you see is what you get. We'll even share our own metrics publicly.",
-    icon: "◈",
   },
   {
     title: "Privacy Matters",
     description:
       "Read-only Stripe access. We never store API keys. Your data is encrypted end-to-end. We exist to help you understand your numbers, not exploit them.",
-    icon: "◇",
   },
 ];
 
@@ -167,7 +164,13 @@ export default function AboutPage() {
                 className="fade-up group bg-white/3 border border-white/8 rounded-2xl p-10 hover:border-primary/30 hover:bg-white/5 transition-all duration-300"
                 style={{ "--delay": `${i * 80}ms` } as React.CSSProperties}
               >
-                <div className="text-3xl text-primary font-mono mb-6">{v.icon}</div>
+                <Image
+                  src="/icon.svg"
+                  alt=""
+                  width={30}
+                  height={30}
+                  className="mb-6 shrink-0 size-[1.875rem]"
+                />
                 <h3 className="font-display text-xl font-bold text-white mb-3 leading-snug pb-0.5">
                   {v.title}
                 </h3>
@@ -194,7 +197,7 @@ export default function AboutPage() {
           </AnimateOnScroll>
 
           <div className="relative">
-            <div className="absolute left-4 md:left-8 top-0 bottom-0 w-px bg-white/8" />
+            <div className="absolute left-[1.125rem] md:left-[2.125rem] top-0 bottom-0 w-px -translate-x-1/2 bg-white/8" />
             <div className="space-y-0">
               {milestones.map((m, i) => (
                 <AnimateOnScroll key={m.title} className="relative pl-14 md:pl-24 pb-16 last:pb-0">

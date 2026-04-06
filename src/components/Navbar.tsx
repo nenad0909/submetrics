@@ -35,12 +35,11 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2">
             <Image
-              src="/logo.svg"
+              src="/logo_white.svg"
               alt="Submetrics"
               width={160}
               height={32}
               priority
-              className="brightness-0 invert"
             />
           </Link>
 

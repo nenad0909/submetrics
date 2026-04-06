@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 
 const coreFeatures = [
@@ -7,42 +8,36 @@ const coreFeatures = [
     description:
       "Watch your revenue update in real-time. See new subscriptions, expansions, contractions, and churn as they happen — not hours later.",
     badge: "Core",
-    icon: "↗",
   },
   {
     title: "Churn Tracking & Alerts",
     description:
       "Get instant Slack/email alerts when a customer cancels. See cancellation reasons pulled directly from Stripe metadata.",
     badge: "Core",
-    icon: "◎",
   },
   {
     title: "Customer LTV",
     description:
       "Know exactly how much each customer is worth over their lifetime. Segment by plan, cohort, or acquisition channel.",
     badge: "Core",
-    icon: "◈",
   },
   {
     title: "Cohort Retention Analysis",
     description:
       "Beautiful retention heatmaps that show exactly how each monthly cohort retains over time. Spot trends and identify what drives stickiness.",
     badge: "Growth",
-    icon: "⊞",
   },
   {
     title: "Weekly Email Digest",
     description:
       "Every Monday morning, get a clean summary of your key metrics. MRR changes, new subscribers, churned customers — all in one email.",
     badge: "All Plans",
-    icon: "✉",
   },
   {
     title: "Revenue Forecasting",
     description:
       "AI-powered projections based on your historical data. See where your MRR is headed in 3, 6, and 12 months with confidence intervals.",
     badge: "Pro",
-    icon: "◇",
   },
 ];
 
@@ -191,7 +186,13 @@ export default function FeaturesPage() {
               >
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="flex items-center justify-between mb-6">
-                  <span className="text-2xl text-primary font-mono">{f.icon}</span>
+                  <Image
+                    src="/icon.svg"
+                    alt=""
+                    width={24}
+                    height={24}
+                    className="shrink-0 size-6"
+                  />
                   <span className="text-[10px] font-semibold uppercase tracking-wider text-white/25 bg-white/5 px-2.5 py-1 rounded-full border border-white/8">
                     {f.badge}
                   </span>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 
@@ -277,16 +278,22 @@ export default function PricingPage() {
           </AnimateOnScroll>
           <AnimateOnScroll className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
-              { title: "Solo Founders", desc: "Building your first SaaS product under $50K MRR", icon: "◉" },
-              { title: "Dev Agencies", desc: "Running multiple subscription products for clients", icon: "◈" },
-              { title: "Indie Hackers", desc: "No-code builders launching their first paid tool", icon: "◇" },
+              { title: "Solo Founders", desc: "Building your first SaaS product under $50K MRR" },
+              { title: "Dev Agencies", desc: "Running multiple subscription products for clients" },
+              { title: "Indie Hackers", desc: "No-code builders launching their first paid tool" },
             ].map((t, i) => (
               <div
                 key={t.title}
                 className="fade-up bg-white/3 border border-white/8 rounded-2xl p-8 text-center hover:border-white/15 transition-all duration-300"
                 style={{ "--delay": `${i * 100}ms` } as React.CSSProperties}
               >
-                <div className="text-3xl text-primary font-mono mb-4">{t.icon}</div>
+                <Image
+                  src="/icon.svg"
+                  alt=""
+                  width={30}
+                  height={30}
+                  className="mx-auto mb-4 shrink-0 size-[1.875rem]"
+                />
                 <h3 className="font-display font-bold text-white mb-2">{t.title}</h3>
                 <p className="text-sm text-white/40">{t.desc}</p>
               </div>
